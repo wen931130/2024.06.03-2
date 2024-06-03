@@ -52,35 +52,46 @@ function draw() {
   image(video, 0, 0);
   drawSkeleton();
   // flip horizontal
-  cam = get();
+  let cam = get();
   translate(cam.width, 0);
   scale(1, -1);  //反向
   image(cam, 0, 0);
 
 }
 
-
-function drawSkeleton() {
-  for (let i = 0; i < poses.length; i++) {
-    let pose = poses[i];
-    let leftEar = pose.keypoints[3];
-    let rightEar = pose.keypoints[4];
-
-    if (leftEar.score > 0.1) {
-      push();
-      textSize(40);
-      text("412730748 陳玟慈", 10, 40);
-      pop();
-    }
-    
-    if (leftEar.score > 0.1 && rightEar.score > 0.1) {
-      let distance = 100; // Adjust this value to increase or decrease the separation
-      image(dinosaurImg, leftEar.x - distance-100, leftEar.y - 50, 50, 50);
-      image(dinosaurImg, rightEar.x + distance+75, rightEar.y -25, 50, 50);
-    }
+function drawSkeleton () {
+  // Draw all the tracked landmark points
+  for (let i = 0; i < poses. length; i++) {
+  pose = poses [i];
+  partA = pose. keypoints [3];
+  partB = pose. keypoints [4];
+  partC = pose. keypoints [9];
+  partD = pose. keypoints [10];
+  let speed = 2; 
+    let posX = (frameCount * speed) % width;
+    let negPosX = width - ((frameCount * speed) % width);
+  //line(partA.x, partA.y, partB.x, partB.y);
+  if (partA. score > 0.1) {
+  image(dinosaurImg,posX, partA. y-25,50,50)
+  }
+  if (partB.score > 0.1) {
+  image (dinosaurImg, posX, partB. y-25,50,50) 
+  if (partB.score > 0.1) {
+    push();
+    textSize(40);
+    text("412730748 陳玟慈", 10,40);
+    pop();
+  }
+  if (partC.score > 0.1) {
+  image(dinosaurImg, partC.x, partC.y, 50, 50);
+  }
+  // Draw the GIF at the right wrist if the score is hi
+  if (partD. score > 0.1) {
+  image (dinosaurImg, partD.x, partD.y, 50, 50);
+}
   }
 }
-
+}
 /* Points (view on left of screen = left part - when mirrored)
   0 nose
   1 left eye
